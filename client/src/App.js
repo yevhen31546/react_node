@@ -36,13 +36,8 @@ function App() {
               <Nav.Link href="/sales">Sales</Nav.Link>
               <Nav.Link href="/warranty">Warranty</Nav.Link>
             </Nav>
-
-            <Form inline>
-              <FormControl type="text" placeholder="Search" className="mr-sm-2" />
-            </Form>
           </Navbar.Collapse>
         </Navbar>
-
       
         <Switch>
           <Route path="/" exact component={SalesPage} />

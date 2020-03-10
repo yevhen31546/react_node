@@ -22,6 +22,9 @@ You will also see any lint errors in the console.<br />
 ### `npm install react-bootstrap bootstrap`
 Using react bootstrap.
 
+#### `npm install react-bootstrap-table --save`
+Using react bootstrap table
+
 ## Back end
 Create new express project by cmd <br />
 
