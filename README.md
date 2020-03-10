@@ -32,8 +32,8 @@ Open [http://localhost:9000](http://localhost:9000) to view it in the browser. <
 ### `Configuring a new route in the Express API`
 
 * On backend/routes, create a sales and warranty.js file <br />
-* On the api/app.js file, insert a new route on line 24:
-app.use('/sales', salesRouter); <br /><br />
+* On the api/app.js file, insert a new route :<br />
+app.use('/sales', salesRouter); <br />
 app.use('/warranty', warrantyRouter);
 
 
