@@ -20,18 +20,21 @@ The page will reload if you make edits.<br />
 You will also see any lint errors in the console.<br />
 
 ## Back end
-
 Create new express project by cmd <br />
 
-### `npx express-generator api`
+### `npx express-generator backend`
 
 Open [http://localhost:9000](http://localhost:9000) to view it in the browser. <br />
 
 ### `npm run start` or `npm run dev`
 
+
 ### `Configuring a new route in the Express API`
-/warranty <br/>
-/sales <br/>
+
+* On backend/routes, create a sales and warranty.js file <br />
+* On the api/app.js file, insert a new route on line 24:
+app.use('/sales', salesRouter); <br /><br />
+app.use('/warranty', warrantyRouter);
 
 
 
