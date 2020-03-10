@@ -9,7 +9,7 @@ class WarrantyPage extends React.Component {
         return (
             <div>
                 <h2>
-                    Warranty page
+                    Warranty...
                 </h2>
             </div>
         )

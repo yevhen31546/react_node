@@ -9,7 +9,7 @@ class SalesPage extends React.Component {
         return (
             <div>
                 <h2>
-                    Sales page
+                    Sales ...
                 </h2>
             </div>
         )
