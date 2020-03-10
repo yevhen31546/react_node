@@ -7,7 +7,7 @@ class WarrantyPage extends React.Component {
     }
 
     callAPI() {
-        fetch("http://localhost:9000/warranty")
+        fetch(process.env.REACT_APP_API_URL+"/warranty")
             .then(res => res.text())
             .then(res => this.setState({ apiResponse: res }))
             .catch(err => err);
@@ -15,7 +15,6 @@ class WarrantyPage extends React.Component {
 
     componentDidMount() {
         this.callAPI();
-        console.log(this.state.apiResponse)
     }
 
     render() {
