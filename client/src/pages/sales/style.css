@@ -9,3 +9,10 @@ thead tr {
     padding-left: 50px;
     background: white;
 }
+
+.help-block {
+    background-color: #dc3545;
+    color: white;
+    margin-top: 2px;
+    text-align: center;
+}

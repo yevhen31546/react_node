@@ -11,7 +11,7 @@ import {
 } from 'react-bootstrap';
 import history from './history';
 
-import logo from './logo.svg';
+// import logo from './logo.svg';
 import './App.css';
 
 // Import pages

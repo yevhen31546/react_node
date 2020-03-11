@@ -1,7 +1,8 @@
 import React from 'react';
 import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
 import {Button} from 'react-bootstrap';
-import history from './../../history';
+import 'font-awesome/css/font-awesome.min.css';
+// import history from './../../history';
 
 import './style.css';
 import { Link } from 'react-router-dom';
@@ -44,7 +45,16 @@ class SalesPage extends React.Component {
         const { error, isLoaded, salesList } = this.state;
 
         function editBtnFormatter() {
-            return '<button type="button" class="btn btn-danger edit">Edit</Button>';
+            return <button type="button" class="btn btn-danger edit">Edit</button>
+        }
+
+        function invoiceFormatter(cell, row) {
+            if (row.invoice === null) {
+                return ''
+            } else {
+                return <a href="#"><i className="fa fa-file-o"></i></a>
+            }
+            
         }
 
         if (error) {
@@ -62,7 +72,6 @@ class SalesPage extends React.Component {
                         striped
                         hover
                         pagination
-                        paginationRowsPerPageOptions={10, 15, 20, 25, 30}
                         search
                         searchPlaceholder="Serial number"
                         >
@@ -70,7 +79,7 @@ class SalesPage extends React.Component {
                         <TableHeaderColumn dataField='sn' dataSort>Serial number</TableHeaderColumn>
                         <TableHeaderColumn dataField='buyer'>Customer</TableHeaderColumn>
                         <TableHeaderColumn dataField='date'>Sales date</TableHeaderColumn>
-                        <TableHeaderColumn dataField='invoice' dataAlign="center">Invoice</TableHeaderColumn>
+                        <TableHeaderColumn dataField='invoice' dataFormat={invoiceFormatter}>Invoice</TableHeaderColumn>
                         <TableHeaderColumn dataField='button' dataFormat={editBtnFormatter}></TableHeaderColumn>
                     </BootstrapTable>
                     
