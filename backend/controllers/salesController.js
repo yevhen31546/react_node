@@ -2,11 +2,8 @@ var Sale = require('../models/salesModel.js');
 
 exports.list_all_sales = function(req, res) {
     Sale.getAllSales(function(err, sales) {
-
-        console.log('controller')
         if (err)
             res.send(err);
-        console.log('res', sales);
         res.json(sales);
     });
 };

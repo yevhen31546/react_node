@@ -16,7 +16,6 @@ Sale.createSale = function(newSale, result) {
     });
 };
 Sale.getAllSales = function(result) {
-    console.log('model...')
     sql.query("SELECT * FROM sales ORDER BY id desc", function(err, res) {
 
         if (err) {
@@ -24,7 +23,6 @@ Sale.getAllSales = function(result) {
             result(null, err);
         } else {
             console.log('sales : ', res);
-
             result(null, res);
         }
     });
