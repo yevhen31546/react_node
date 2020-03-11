@@ -1,0 +1,11 @@
+thead tr {
+    background-color: #b3d7ff;
+}
+
+#form_area {
+    padding-top: 30px;
+    padding-bottom: 30px;
+    padding-right: 50px;
+    padding-left: 50px;
+    background: white;
+}
