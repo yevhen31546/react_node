@@ -11,9 +11,7 @@ exports.list_all_sales = function(req, res) {
 
 exports.create_a_sale = function(req, res) {
     var new_sale = new Sale(req.body);
-
     Sale.createSale(new_sale, function(err, sales) {
-
         if (err)
             res.send(err);
         res.json(sales);

@@ -42,6 +42,9 @@ Open [http://localhost:9000](http://localhost:9000) to view it in the browser. <
 app.use('/sales', salesRouter); <br />
 app.use('/warranty', warrantyRouter);
 
+#### `npm i multer uuid`
+For file uploading, npm multer install <br />
+
 ## Connect DB
 ### `npm install mysql`
 Install mysql module

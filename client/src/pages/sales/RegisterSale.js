@@ -13,7 +13,8 @@ class RegisterSale extends React.Component {
             buyer: '',
             s_date: '',
             invoice: '',
-            submitted: false
+            submitted: false,
+            msg: false
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -32,12 +33,22 @@ class RegisterSale extends React.Component {
         const { model, sn, buyer, s_date, invoice } = this.state;
         if (model && sn && buyer && s_date && invoice) {
             console.log("data: ", this.state);
+            fetch(process.env.REACT_APP_API_URL+"/sales", {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(this.state)
+            }).then(function(data) {
+                console.log('register response:', data);
+                this.setState({msg: true});
+            }).catch(function(err) {
+                console.log(err);
+            });
         }
         
     }
 
     render() {
-        const {model, sn, buyer, s_date, invoice, submitted} = this.state;
+        const {model, sn, buyer, s_date, invoice, submitted, msg} = this.state;
         return (
             <Container>
                 <Row className="justify-content-md-center">
@@ -47,6 +58,9 @@ class RegisterSale extends React.Component {
                         <h2 className="mt-4 mb-4">
                             Register new sales
                         </h2>
+                        {msg &&
+                            <div className="success-block">Registered Successfully</div>
+                        }
                         <Form>
                             <Form.Group>
                                 <Form.Control type="text" name="model" value={model} onChange={this.handleChange} placeholder="Make and Model" />

@@ -1,16 +1,19 @@
 var sql = require('./db.js');
 
 //Sales object constructor
-var Sale = {}
+var Sale = function(sale) {
+    this.model = sale.model;
+    this.sn = sale.sn;
+    this.buyer = sale.buyer;
+    this.date = sale.s_date;
+    this.invoice = sale.invoice;
+};
 
 Sale.createSale = function(newSale, result) {
     sql.query("INSERT INTO sales set ?", newSale, function(err, res) {
-
         if (err) {
-            console.log("error: ", err);
             result(err, null);
         } else {
-            console.log(res.insertId);
             result(null, res.insertId);
         }
     });
