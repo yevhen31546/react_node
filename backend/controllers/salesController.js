@@ -1,4 +1,5 @@
 var Sale = require('../models/salesModel.js');
+var fileUpload = require('../file_upload');
 
 exports.list_all_sales = function(req, res) {
     Sale.getAllSales(function(err, sales) {
@@ -10,6 +11,10 @@ exports.list_all_sales = function(req, res) {
 
 
 exports.create_a_sale = function(req, res) {
+    const url = req.protocol + '://' + req.get('host');
+    const invoice_path = url + '/public/upload/' + req.file.filename;
+    req.body = {...req.body, invoice: invoice_path}
+    // console.log(req.body);
     var new_sale = new Sale(req.body);
     Sale.createSale(new_sale, function(err, sales) {
         if (err)

@@ -3,7 +3,6 @@ import {Form, Button, Container, Col, Row} from 'react-bootstrap';
 import './style.css'
 
 
-
 class RegisterSale extends React.Component {
     constructor (props) {
         super(props);
@@ -19,6 +18,7 @@ class RegisterSale extends React.Component {
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSave = this.handleSave.bind(this);
+        this.handleFileChange = this.handleFileChange.bind(this);
     }
 
     handleChange(e) {
@@ -26,17 +26,29 @@ class RegisterSale extends React.Component {
         this.setState({ [name]: value });
     }
 
+    handleFileChange(e) {
+        this.setState({ invoice: e.target.files[0] })
+    }
+
     handleSave(e) {
         e.preventDefault();
 
         this.setState({ submitted: true });
         const { model, sn, buyer, s_date, invoice } = this.state;
+        
         if (model && sn && buyer && s_date && invoice) {
-            console.log("data: ", this.state);
+            const formData = new FormData();
+            formData.append('model', model);            
+            formData.append('sn', sn);
+            formData.append('buyer', buyer);
+            formData.append('s_date', s_date);
+            formData.append('invoice', invoice);
+            // console.log("form data", formData);
             fetch(process.env.REACT_APP_API_URL+"/sales", {
                 method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(this.state)
+                // headers: {'Content-type': 'application/json'},
+                body: formData
+                // body: JSON.stringify(this.state)
             }).then(function(data) {
                 console.log('register response:', data);
                 this.setState({msg: true});
@@ -93,7 +105,7 @@ class RegisterSale extends React.Component {
 
                             <Form.Group>
                                 <Form.Label>Invoice PDF</Form.Label>
-                                <Form.Control type="file" name="invoice" value={invoice} onChange={this.handleChange} />
+                                <Form.Control type="file" name="invoice" onChange={this.handleFileChange} />
                                 {submitted && !invoice &&
                                     <div className="help-block">Please choose invoice file</div>
                                 }

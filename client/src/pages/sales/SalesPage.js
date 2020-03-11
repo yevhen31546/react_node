@@ -1,6 +1,6 @@
 import React from 'react';
 import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
-import {Button} from 'react-bootstrap';
+import {Button, Row} from 'react-bootstrap';
 import 'font-awesome/css/font-awesome.min.css';
 // import history from './../../history';
 
@@ -45,14 +45,14 @@ class SalesPage extends React.Component {
         const { error, isLoaded, salesList } = this.state;
 
         function editBtnFormatter() {
-            return <button type="button" class="btn btn-danger edit">Edit</button>
+            return <button type="button" className="btn btn-danger edit">Edit</button>
         }
 
         function invoiceFormatter(cell, row) {
             if (row.invoice === null) {
                 return ''
             } else {
-                return <a href="#"><i className="fa fa-file-o"></i></a>
+                return <a href={row.invoice} target="blank"><i className="fa fa-file-o"></i></a>
             }
             
         }
