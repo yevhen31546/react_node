@@ -4,5 +4,5 @@ block content
   h1= title
   p Welcome to #{title}
   ul
-  li Sales endpoint: #{sales}
-  li Warranty endpoint:  #{warranty}
+  li Sales endpoint : #[a(href="http://localhost:9000/sales") #{sales}]
+  li Warranty endpoint: #[a(href="http://localhost:9000/warranty") #{warranty}]
