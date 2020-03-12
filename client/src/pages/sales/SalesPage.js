@@ -1,19 +1,23 @@
 import React from 'react';
 import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
-import {Button, Row} from 'react-bootstrap';
+import {Button} from 'react-bootstrap';
 import 'font-awesome/css/font-awesome.min.css';
-// import history from './../../history';
+import { withRouter } from 'react-router-dom';
+import Loader from 'react-loader-spinner'
+import EditModal from '../../components/editSalesModal';
 
 import './style.css';
-import { Link } from 'react-router-dom';
 
 class SalesPage extends React.Component {
     constructor (props) {
         super(props);
         this.state = {
+            requiredItem: 0,
             error: null,
             isLoaded: false,
-            salesList: []
+            salesList: [],
+            modalShow: false,
+            saleItem: {}
         };
     }
 
@@ -24,7 +28,7 @@ class SalesPage extends React.Component {
                 result => {
                     this.setState({
                         isLoaded: true,
-                        salesList: result
+                        salesList: result,
                     });
                 },
                 error => {
@@ -34,38 +38,74 @@ class SalesPage extends React.Component {
                     });
                 }
             );
-    }
+    }    
 
     componentDidMount() {
         this.callAPI();
     }
 
+    editBtnFormatter = (cell, row) => {
+        return <Button variant="danger" onClick={() => this.handleModalShow(row)}>Edit</Button>
+    }
+
+    handleModalShow = (row) => { 
+        this.setState({modalShow: true, saleItem: row})
+    }
+
+    handleClose = ()=> {
+        this.setState({modalShow: false, saleItem:{}})
+    }
+
+    handleSave = (data) => {
+        console.log('update data..', data);
+        fetch(process.env.REACT_APP_API_URL+"/sales/"+data.id, {
+            method: 'PUT',
+            headers: {
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify(data)
+            // body: JSON.stringify(data)
+            // body: data
+        })
+        .then(res => res.json())
+        .then((result) => {
+            console.log('update result' , result);
+        }).catch((err) => {
+            console.log(err);
+        });
+        
+        this.setState({modalShow: false, saleItem: {}})
+    }
+
     render() {
 
         const { error, isLoaded, salesList } = this.state;
-
-        function editBtnFormatter() {
-            return <button type="button" className="btn btn-danger edit">Edit</button>
-        }
+        const { history } = this.props;
 
         function invoiceFormatter(cell, row) {
             if (row.invoice === null) {
                 return ''
             } else {
                 return <a href={row.invoice} target="blank"><i className="fa fa-file-o"></i></a>
-            }
-            
+            }            
         }
 
         if (error) {
             return <div>Error: {error.message}</div>;
         } else if (!isLoaded) {
-            return <div>Loading...</div>;
+            return <Loader
+                        type="Oval"
+                        color="#00BFFF"
+                        height={100}
+                        width={100}
+                        timeout={3000} //3 secs
+            
+                    />
         } else {
-            console.log(salesList);
 
             return (
                 <div>
+                    
                     <BootstrapTable
                         data={salesList}
                         bordered={false}
@@ -80,13 +120,13 @@ class SalesPage extends React.Component {
                         <TableHeaderColumn dataField='buyer'>Customer</TableHeaderColumn>
                         <TableHeaderColumn dataField='date'>Sales date</TableHeaderColumn>
                         <TableHeaderColumn dataField='invoice' dataFormat={invoiceFormatter}>Invoice</TableHeaderColumn>
-                        <TableHeaderColumn dataField='button' dataFormat={editBtnFormatter}></TableHeaderColumn>
+                        <TableHeaderColumn dataField='button' dataFormat={this.editBtnFormatter}></TableHeaderColumn>
                     </BootstrapTable>
                     
-                    {/* <Button variant="primary" onClick={()=>history.push('/registersale')}>Add new sale</Button> */}
-                    <Link to="/registersale">
-                        <Button variant="primary">Add new sale</Button>
-                    </Link>
+                    <Button variant="primary" onClick={()=>history.push('/registersale')}>Add new sale</Button>
+
+                    <EditModal show={this.state.modalShow} data={this.state.saleItem} handleClose={this.handleClose} handleSave={this.handleSave} />
+                    
                 </div>
             )
         
@@ -94,4 +134,4 @@ class SalesPage extends React.Component {
     }
 }
 
-export default SalesPage;
+export default withRouter(SalesPage);

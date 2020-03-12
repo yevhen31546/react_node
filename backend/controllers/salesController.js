@@ -1,5 +1,4 @@
 var Sale = require('../models/salesModel.js');
-var fileUpload = require('../file_upload');
 
 exports.list_all_sales = function(req, res) {
     Sale.getAllSales(function(err, sales) {
@@ -25,7 +24,15 @@ exports.create_a_sale = function(req, res) {
 
 
 exports.update_a_sale = function(req, res) {
-    Sale.updateById(req.params.saleId, new Task(req.body), function(err, sales) {
+    // var {saleId} = req.params
+    // console.log('saleId',req.params.saleId)
+    // console.log('req.body', req.body)
+    // sale = new Sale(req.body)
+    // console.log(sale)
+
+    // res.json(req.params.saleId)
+    // res.json(req.body)
+    Sale.updateById(req.params.saleId, new Sale(req.body), function(err, sales) {
         if (err)
             res.send(err);
         res.json(sales);

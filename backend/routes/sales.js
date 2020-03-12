@@ -10,6 +10,6 @@ router.post('/', upload.single('invoice'), salesController.create_a_sale);
 
 router.put('/:saleId', salesController.update_a_sale);
 
-router.delete('/:saleId', salesController.delete_a_sale);
+router.delete('/delete/:saleId', salesController.delete_a_sale);
 
 module.exports = router;

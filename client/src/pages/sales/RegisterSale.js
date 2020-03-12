@@ -1,5 +1,6 @@
 import React from 'react';
 import {Form, Button, Container, Col, Row} from 'react-bootstrap';
+
 import './style.css'
 
 
@@ -12,8 +13,8 @@ class RegisterSale extends React.Component {
             buyer: '',
             s_date: '',
             invoice: '',
-            submitted: false,
-            msg: false
+            submitted: '',
+            registering: ''
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -33,7 +34,7 @@ class RegisterSale extends React.Component {
     handleSave(e) {
         e.preventDefault();
 
-        this.setState({ submitted: true });
+        this.setState({...this.state, submitted: true });
         const { model, sn, buyer, s_date, invoice } = this.state;
         
         if (model && sn && buyer && s_date && invoice) {
@@ -43,16 +44,24 @@ class RegisterSale extends React.Component {
             formData.append('buyer', buyer);
             formData.append('s_date', s_date);
             formData.append('invoice', invoice);
+            this.setState({
+                ...this.state,
+                submitted: true,
+                registering: true
+            });
+            console.log(this.state);
             // console.log("form data", formData);
             fetch(process.env.REACT_APP_API_URL+"/sales", {
                 method: 'POST',
                 // headers: {'Content-type': 'application/json'},
                 body: formData
                 // body: JSON.stringify(this.state)
-            }).then(function(data) {
-                console.log('register response:', data);
-                this.setState({msg: true});
-            }).catch(function(err) {
+            }).then((data) => {
+                const tempData = JSON.parse(JSON.stringify(this.state));
+                Object.keys(tempData).map(key => tempData[key] = '');
+                this.setState({...tempData});
+                console.log(this.state);
+            }).catch((err) => {
                 console.log(err);
             });
         }
@@ -60,7 +69,7 @@ class RegisterSale extends React.Component {
     }
 
     render() {
-        const {model, sn, buyer, s_date, invoice, submitted, msg} = this.state;
+        const {model, sn, buyer, s_date, invoice, submitted, registering} = this.state;
         return (
             <Container>
                 <Row className="justify-content-md-center">
@@ -70,8 +79,8 @@ class RegisterSale extends React.Component {
                         <h2 className="mt-4 mb-4">
                             Register new sales
                         </h2>
-                        {msg &&
-                            <div className="success-block">Registered Successfully</div>
+                        {registering &&
+                            alert('Successfully added!')
                         }
                         <Form>
                             <Form.Group>

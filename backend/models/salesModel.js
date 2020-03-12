@@ -22,27 +22,29 @@ Sale.getAllSales = function(result) {
     sql.query("SELECT * FROM sales ORDER BY id desc", function(err, res) {
 
         if (err) {
-            console.log("error: ", err);
+            // console.log("error: ", err);
             result(null, err);
         } else {
-            console.log('sales : ', res);
+            // console.log('sales : ', res);
             result(null, res);
         }
     });
 };
-Sale.updateById = function(id, task, result) {
-    sql.query("UPDATE sales SET sales = ? WHERE id = ?", [sales.sales, id], function(err, res) {
-        if (err) {
-            console.log("error: ", err);
-            result(null, err);
-        } else {
-            result(null, res);
-        }
+Sale.updateById = function(id, sales, result) {
+    console.log('sales..', sales)
+    sql.query("UPDATE sales SET model = ?, sn = ?, buyer = ?, date = ?  WHERE id = ?",
+            [sales.model, sales.sn, sales.buyer, sales.date, id], 
+            function(err, res) {
+            if (err) {
+                console.log("error: ", err);
+                result(null, err);
+            } else {
+                result(null, res);
+            }
     });
 };
 Sale.remove = function(id, result) {
     sql.query("DELETE FROM sales WHERE id = ?", [id], function(err, res) {
-
         if (err) {
             console.log("error: ", err);
             result(null, err);
