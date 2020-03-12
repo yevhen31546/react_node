@@ -1,3 +1,4 @@
+// import mysql db connection
 var sql = require('./db.js');
 
 //Sales object constructor
@@ -9,6 +10,7 @@ var Sale = function(sale) {
     this.invoice = sale.invoice;
 };
 
+// Create Sale
 Sale.createSale = function(newSale, result) {
     sql.query("INSERT INTO sales set ?", newSale, function(err, res) {
         if (err) {
@@ -18,20 +20,21 @@ Sale.createSale = function(newSale, result) {
         }
     });
 };
+
+// Get all Sales list
 Sale.getAllSales = function(result) {
     sql.query("SELECT * FROM sales ORDER BY id desc", function(err, res) {
-
         if (err) {
             // console.log("error: ", err);
             result(null, err);
         } else {
-            // console.log('sales : ', res);
             result(null, res);
         }
     });
 };
+
+// Update Sale
 Sale.updateById = function(id, sales, result) {
-    console.log('sales..', sales)
     sql.query("UPDATE sales SET model = ?, sn = ?, buyer = ?, date = ?  WHERE id = ?",
             [sales.model, sales.sn, sales.buyer, sales.date, id], 
             function(err, res) {
@@ -43,13 +46,14 @@ Sale.updateById = function(id, sales, result) {
             }
     });
 };
+
+// Remove Sale
 Sale.remove = function(id, result) {
     sql.query("DELETE FROM sales WHERE id = ?", [id], function(err, res) {
         if (err) {
             console.log("error: ", err);
             result(null, err);
         } else {
-
             result(null, res);
         }
     });

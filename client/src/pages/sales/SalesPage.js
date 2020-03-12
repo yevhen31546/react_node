@@ -4,24 +4,26 @@ import {Button} from 'react-bootstrap';
 import 'font-awesome/css/font-awesome.min.css';
 import { withRouter } from 'react-router-dom';
 import Loader from 'react-loader-spinner'
+// import component
 import EditModal from '../../components/editSalesModal';
-
+// import style
 import './style.css';
 
 class SalesPage extends React.Component {
     constructor (props) {
         super(props);
         this.state = {
-            requiredItem: 0,
             error: null,
             isLoaded: false,
             salesList: [],
             modalShow: false,
-            saleItem: {}
+            saleItem: {},
+            updating: false
         };
     }
 
-    callAPI() {
+    // Get all sales list
+    getAllSalesList() {
         fetch(process.env.REACT_APP_API_URL+"/sales")
             .then(res => res.json())
             .then(
@@ -41,35 +43,54 @@ class SalesPage extends React.Component {
     }    
 
     componentDidMount() {
-        this.callAPI();
+        this.getAllSalesList();
     }
 
+    // Edit sales button
     editBtnFormatter = (cell, row) => {
         return <Button variant="danger" onClick={() => this.handleModalShow(row)}>Edit</Button>
     }
-
+    
+    // Display edit modal
     handleModalShow = (row) => { 
         this.setState({modalShow: true, saleItem: row})
     }
 
+    // Close edit modal
     handleClose = ()=> {
         this.setState({modalShow: false, saleItem:{}})
     }
 
-    handleSave = (data) => {
-        console.log('update data..', data);
+    // Update sales data
+    handleUpdate = (data) => {
+        // Preparing form data for update
+        const formData = new FormData();
+            formData.append('model', data.model);            
+            formData.append('sn', data.sn);
+            formData.append('buyer', data.buyer);
+            formData.append('s_date', data.s_date);
+            formData.append('invoice', data.invoice);
+            this.setState({
+                ...this.state,
+                updating: true
+            });
+
         fetch(process.env.REACT_APP_API_URL+"/sales/"+data.id, {
             method: 'PUT',
-            headers: {
-                'Content-Type':'application/json'
-            },
-            body: JSON.stringify(data)
-            // body: JSON.stringify(data)
-            // body: data
+            body: formData
         })
         .then(res => res.json())
         .then((result) => {
-            console.log('update result' , result);
+            // update row
+            let {salesList} = this.state;
+            for (let i =0; i<salesList.length; i++) {
+                if(salesList[i].id === data.id) {
+                    salesList[i] = {...salesList[i], ...result}
+                    continue
+                }
+            }
+            this.setState({...this.state.salesList, ...salesList})
+            this.setState({updating: false})
         }).catch((err) => {
             console.log(err);
         });
@@ -82,6 +103,7 @@ class SalesPage extends React.Component {
         const { error, isLoaded, salesList } = this.state;
         const { history } = this.props;
 
+        // invoice file icon
         function invoiceFormatter(cell, row) {
             if (row.invoice === null) {
                 return ''
@@ -90,7 +112,7 @@ class SalesPage extends React.Component {
             }            
         }
 
-        if (error) {
+        if (error) { // sales list load error
             return <div>Error: {error.message}</div>;
         } else if (!isLoaded) {
             return <Loader
@@ -102,10 +124,8 @@ class SalesPage extends React.Component {
             
                     />
         } else {
-
             return (
-                <div>
-                    
+                <>
                     <BootstrapTable
                         data={salesList}
                         bordered={false}
@@ -122,12 +142,11 @@ class SalesPage extends React.Component {
                         <TableHeaderColumn dataField='invoice' dataFormat={invoiceFormatter}>Invoice</TableHeaderColumn>
                         <TableHeaderColumn dataField='button' dataFormat={this.editBtnFormatter}></TableHeaderColumn>
                     </BootstrapTable>
-                    
+                    {/* register sale button */}
                     <Button variant="primary" onClick={()=>history.push('/registersale')}>Add new sale</Button>
-
-                    <EditModal show={this.state.modalShow} data={this.state.saleItem} handleClose={this.handleClose} handleSave={this.handleSave} />
-                    
-                </div>
+                    {/* edit modal */}
+                    <EditModal show={this.state.modalShow} data={this.state.saleItem} handleClose={this.handleClose} handleUpdate={this.handleUpdate} />
+                </>
             )
         
         }

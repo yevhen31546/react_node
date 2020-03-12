@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { Modal, Button, Form } from 'react-bootstrap';
+import { Modal, Button } from 'react-bootstrap';
 
-var messages = []
+
 class EditModal extends Component {
     constructor(props) {
         super(props);
@@ -10,14 +10,10 @@ class EditModal extends Component {
             sn: '',
             buyer: '',
             s_date: '',
-            invoice: '',
-            update: false,
-            err: {
-                display: false,
-                msg: []
-            }
+            invoice: ''
         };
     }
+
     componentDidUpdate(previousProps, previousState ) {
         if (previousProps.data !== this.props.data) {
             this.setState({...this.state, ...this.props.data})
@@ -34,37 +30,18 @@ class EditModal extends Component {
         this.setState({ invoice: e.target.files[0] })
     }
 
-    handleItem = async() => {
-        messages = []
-        let data = this.state;
-        let keys = Object.keys(data)
-        console.log(data);
-        // console.log(keys[3]);
-        // console.log(data[keys[3]])
-        for (let i =0; i< 5; i++) {
-            if (data[keys[i]] === '') messages.push(keys[i])
-        }
-        console.log(messages)
-        if(messages.length > 0) {
-            await this.setState({err: {
-            display: true,
-            msg: [...messages]
-            }}) 
-        } else {
-            this.setState({err:{display: false}})
-        }
+    // preprocessing for update
+    handleBeforeUpdate = (e) => {
+        e.preventDefault();
+        const { model, sn, buyer, s_date } = this.state;
 
-        console.log(this.state.err.display)
-        if(!this.state.err.display) {
-            this.setState({ display: false})
-            this.props.handleSave(this.state)
+        if (model && sn && buyer && s_date) {
+            this.props.handleUpdate(this.state)
         }
     }
 
     render() {
-        var err_result = messages.map ((item, index) => (
-            <p key={index}>error in {item}</p>
-        ))
+        const {model, sn, buyer, s_date} = this.state;
 
         return (
             <Modal show={this.props.show} onHide={this.props.handleClose}>
@@ -73,17 +50,20 @@ class EditModal extends Component {
                 </Modal.Header>
                 <Modal.Body>
                     <p><input className="form-control" type="text" name="model" defaultValue={this.props.data.model} onChange={(e) => this.handleChange(e)} /></p>
+                    {!model && <div className="help-block">Please provide model name</div>}
                     <p><input className="form-control" type="text" name="sn" defaultValue={this.props.data.sn} onChange={(e) => this.handleChange(e)} /></p>
+                    {!sn && <div className="help-block">Please provide serial number</div>}
                     <p><input className="form-control" type="text" name="buyer" defaultValue={this.props.data.buyer} onChange={(e) => this.handleChange(e)} /></p>
+                    {!buyer && <div className="help-block">Please provide buyer information</div>}
                     <p><input className="form-control" type="date" name="s_date" defaultValue={this.props.data.date} onChange={(e) => this.handleChange(e)} /></p>
+                    {!s_date && <div className="help-block">Please provide sales date</div>}
                     <p><input type="file" name="invoice" onChange={(e) => this.handleFileChange(e)} /></p>
-                    <div className="show_msg" style={{color: 'red', display: this.state.err.display ? '' : 'none'}}>{err_result}</div>
                 </Modal.Body>
                 <Modal.Footer>
                 <Button variant="secondary" onClick={this.props.handleClose}>
                     Close
                 </Button>
-                <Button variant="primary" onClick={ this.handleItem}>
+                <Button variant="primary" onClick={ this.handleBeforeUpdate}>
                     Save Changes
                 </Button>
                 </Modal.Footer>

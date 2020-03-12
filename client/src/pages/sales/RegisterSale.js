@@ -1,6 +1,5 @@
 import React from 'react';
 import {Form, Button, Container, Col, Row} from 'react-bootstrap';
-
 import './style.css'
 
 
@@ -31,6 +30,7 @@ class RegisterSale extends React.Component {
         this.setState({ invoice: e.target.files[0] })
     }
 
+    // Register sale
     handleSave(e) {
         e.preventDefault();
 
@@ -38,6 +38,7 @@ class RegisterSale extends React.Component {
         const { model, sn, buyer, s_date, invoice } = this.state;
         
         if (model && sn && buyer && s_date && invoice) {
+            // Preparing form data for register
             const formData = new FormData();
             formData.append('model', model);            
             formData.append('sn', sn);
@@ -47,20 +48,20 @@ class RegisterSale extends React.Component {
             this.setState({
                 ...this.state,
                 submitted: true,
-                registering: true
+                registering: true // Register flag
             });
-            console.log(this.state);
-            // console.log("form data", formData);
+
+            // Register API call
             fetch(process.env.REACT_APP_API_URL+"/sales", {
                 method: 'POST',
                 // headers: {'Content-type': 'application/json'},
                 body: formData
                 // body: JSON.stringify(this.state)
             }).then((data) => {
+                // intialize form field by initializing state
                 const tempData = JSON.parse(JSON.stringify(this.state));
                 Object.keys(tempData).map(key => tempData[key] = '');
                 this.setState({...tempData});
-                console.log(this.state);
             }).catch((err) => {
                 console.log(err);
             });
@@ -80,7 +81,7 @@ class RegisterSale extends React.Component {
                             Register new sales
                         </h2>
                         {registering &&
-                            alert('Successfully added!')
+                            alert('Successfully registered')
                         }
                         <Form>
                             <Form.Group>
