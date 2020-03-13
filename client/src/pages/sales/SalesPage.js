@@ -3,6 +3,7 @@ import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
 import {Button} from 'react-bootstrap';
 import 'font-awesome/css/font-awesome.min.css';
 import { withRouter } from 'react-router-dom';
+import axios from "axios";
 import Loader from 'react-loader-spinner'
 // import component
 import EditModal from '../../components/editSalesModal';
@@ -21,6 +22,53 @@ class SalesPage extends React.Component {
             updating: false
         };
     }
+
+    // Invoice viewer
+    viewHandler = async (path) => {
+        // console.log('asdfasfsdaf', path)
+        // fetch(process.env.REACT_APP_API_URL+"/pdf/?path="+path, {
+        //     method: "GET",
+        //     headers: {
+        //         "Content-Type": "application/pdf"
+        //     }
+        // })
+        // .then(res => res.blob())
+        // .then(response => {
+        //     //Create a Blob from the PDF Stream
+        //     // console.log(response);
+        //     const file = new Blob([response], {
+        //         type: "application/pdf"
+        //     });
+        //     console.log(file)
+        //     //Build a URL from the file
+        //     const fileURL = URL.createObjectURL(file);
+        //     console.log(fileURL)
+        //     //Open the URL on new Window
+        //     window.open(fileURL);
+        // })
+        // .catch(error => {
+        //     console.log(error);
+        // });
+
+        axios(process.env.REACT_APP_API_URL+"/pdf/?path="+path, {
+                method: "GET",
+                responseType: "blob"
+                //Force to receive data in a Blob Format
+            })
+            .then(response => {
+                //Create a Blob from the PDF Stream
+                const file = new Blob([response.data], {
+                    type: "application/pdf"
+                });
+                //Build a URL from the file
+                const fileURL = URL.createObjectURL(file);
+                //Open the URL on new Window
+                window.open(fileURL);
+            })
+            .catch(error => {
+                console.log(error);
+         });
+    };
 
     // Get all sales list
     getAllSalesList() {
@@ -49,6 +97,16 @@ class SalesPage extends React.Component {
     // Edit sales button
     editBtnFormatter = (cell, row) => {
         return <Button variant="danger" onClick={() => this.handleModalShow(row)}>Edit</Button>
+    }
+
+    // invoice file icon
+    invoiceFormatter = (cell, row) => {
+        if (row.invoice === null) {
+            return ''
+        } else {
+            // return <a href={row.invoice} target="blank"><i className="fa fa-file-o"></i></a>
+            return <Button variant="danger" onClick={() => this.viewHandler(row.invoice)}><i className="fa fa-file-o"></i></Button>
+        }
     }
     
     // Display edit modal
@@ -103,15 +161,6 @@ class SalesPage extends React.Component {
         const { error, isLoaded, salesList } = this.state;
         const { history } = this.props;
 
-        // invoice file icon
-        function invoiceFormatter(cell, row) {
-            if (row.invoice === null) {
-                return ''
-            } else {
-                return <a href={row.invoice} target="blank"><i className="fa fa-file-o"></i></a>
-            }            
-        }
-
         if (error) { // sales list load error
             return <div>Error: {error.message}</div>;
         } else if (!isLoaded) {
@@ -139,7 +188,7 @@ class SalesPage extends React.Component {
                         <TableHeaderColumn dataField='sn' dataSort>Serial number</TableHeaderColumn>
                         <TableHeaderColumn dataField='buyer'>Customer</TableHeaderColumn>
                         <TableHeaderColumn dataField='date'>Sales date</TableHeaderColumn>
-                        <TableHeaderColumn dataField='invoice' dataFormat={invoiceFormatter}>Invoice</TableHeaderColumn>
+                        <TableHeaderColumn dataField='invoice' dataFormat={this.invoiceFormatter}>Invoice</TableHeaderColumn>
                         <TableHeaderColumn dataField='button' dataFormat={this.editBtnFormatter}></TableHeaderColumn>
                     </BootstrapTable>
                     {/* register sale button */}

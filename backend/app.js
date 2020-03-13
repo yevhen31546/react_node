@@ -20,16 +20,19 @@ app.set('view engine', 'jade');
 app.use(cors());
 app.use(logger('dev'));
 
+
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 //importing route
 var indexRouter = require('./routes/index');
 var salesRouter = require('./routes/sales');
 var warrantyRouter = require('./routes/warranty');
+var pdfRouter = require('./routes/pdf');
 
 app.use('/', indexRouter);
 app.use('/sales', salesRouter);
 app.use('/warranty', warrantyRouter);
+app.use('/pdf', pdfRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

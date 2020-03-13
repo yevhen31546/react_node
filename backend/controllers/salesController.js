@@ -12,8 +12,9 @@ exports.list_all_sales = function(req, res) {
 
 // Register Sale
 exports.create_a_sale = function(req, res) {
-    const url = req.protocol + '://' + req.get('host');
-    const invoice_path = url + '/public/upload/' + req.file.filename;
+    // const url = req.protocol + '://' + req.get('host');
+    // const invoice_path = url + '/public/upload/' + req.file.filename;
+    const invoice_path = '/public/upload/' + req.file.filename;
     req.body = {...req.body, invoice: invoice_path}
     Sale.createSale(new Sale(req.body), function(err, sales) {
         if (err)
