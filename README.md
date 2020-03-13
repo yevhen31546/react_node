@@ -1,4 +1,10 @@
 This is for Datatable CRUD functionality project.
+* Looking for a developer to create a simple 
+Node.js registration website with records database.<br>
+Website must have two main views - Sales and Warranty.
+Features must include Adding new entry, editing/updating previous entry, 
+attaching files, pagination for main views, 
+PDF creation from entry record, searching for records, date format validation *
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).<br/>
 
