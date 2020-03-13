@@ -32,28 +32,31 @@ class RegisterWarranty extends React.Component {
     }
 
     handleChange(e) {
+        this.setState({registering: ''});
+      
         const { name, value } = e.target;
+     
         this.setState({ [name]: value });
-    }
-
-    handleFileChange(e) {
-        this.setState({ invoice: e.target.files[0] })
+        if(name==="war_type") {
+            this.setState({war_type:value});
+        } else if (e.target.type === "checkbox") {
+            this.setState({ [name]: e.target.checked });
+        }
     }
 
     // Register sale
     handleSave(e) {
         e.preventDefault();
-
+        this.setState({
+            submitted: true
+        });
         const { model, sn, buyer, rec_date } = this.state;
         if (model && sn && buyer && rec_date) {
             this.setState({
-                ...this.state,
-                submitted: true,
-                registering: true // Register flag
+                registering: ''
             });
             // Preparing form data for register
-            console.log('sending...', this.state)
-
+            // console.log('registering...', this.state)
             // Register API call
             fetch(process.env.REACT_APP_API_URL+"/warranty", {
                 method: 'POST',
@@ -64,12 +67,13 @@ class RegisterWarranty extends React.Component {
                 // intialize form field by initializing state
                 const tempData = JSON.parse(JSON.stringify(this.state));
                 Object.keys(tempData).map(key => tempData[key] = '');
-                tempData.submitted = false;
-                tempData.registering = false
+                tempData.submitted = '';
+                tempData.registering = true;
                 tempData.options = ['Paid', 'Debt']
+                tempData.war_type = 'Paid';
                 this.setState({...tempData});
                
-                console.log(this.state)
+                // console.log(this.state)
             }).catch((err) => {
                 console.log(err);
             });
@@ -120,7 +124,7 @@ class RegisterWarranty extends React.Component {
 
                             <Form.Group>
                                 <Form.Label>Warranty type</Form.Label>
-                                <Form.Control as="select" name="war_type" onChange={this.handleChange}>
+                                <Form.Control as="select" name="war_type" value={war_type} onChange={this.handleChange}>
                                     {optionResult}
                                 </Form.Control>
                             </Form.Group>
@@ -167,11 +171,11 @@ class RegisterWarranty extends React.Component {
                             </Form.Group>
 
                             <Form.Group>
-                                <Form.Check type="checkbox" name="invoice_flag" onChange={this.handleChange} label="Added to Invoice" />
+                                <Form.Check type="checkbox" name="invoice_flag" checked={invoice_flag} onChange={this.handleChange} label="Added to Invoice" />
                             </Form.Group>
 
                             <Form.Group>
-                                <Form.Check type="checkbox" name="invoice_sent" onChange={this.handleChange} label="Invoice sent" />
+                                <Form.Check type="checkbox" name="invoice_sent" checked={invoice_sent} onChange={this.handleChange} label="Invoice sent" />
                             </Form.Group>
 
                             <Form.Group>

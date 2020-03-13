@@ -22,14 +22,15 @@ var Warranty = function(Warranty) {
     this.war_res_des = Warranty.war_res_des;
     this.service_code = Warranty.service_code;
     this.price = Warranty.price;
-    this.invoice_flag = Warranty.invoice_flag ==='on'? 1: 0;
-    this.invoice_sent = Warranty.invoice_sent ==='on'? 1: 0;;
+    this.invoice_flag = Warranty.invoice_flag? 1: 0;
+    this.invoice_sent = Warranty.invoice_sent? 1: 0;;
     this.deliv_date = Warranty.deliv_date;
     this.updated_at = date + "-" + month + "-" + year + " " + hours + ":" + minutes
 };
 
 // Create Warranty
 Warranty.createWarranty = function(newWarranty, result) {
+    console.log('warranty', newWarranty)
     sql.query("INSERT INTO warranty set ?", newWarranty, function(err, res) {
         if (err) {
             result(err, null);

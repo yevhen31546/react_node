@@ -12,6 +12,7 @@ exports.list_all_warranty = function(req, res) {
 
 // Register Warranty
 exports.create_a_warranty = function(req, res) {
+    // console.log('request body..', req.body)
     Warranty.createWarranty(new Warranty(req.body), function(err, Warranty) {
         if (err)
             res.send(err);

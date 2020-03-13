@@ -22,6 +22,7 @@ class UpdateWarranty extends React.Component {
             invoice_flag: '', // added to invoice
             invoice_sent: '', // invoice sent
             deliv_date: '', // returned to customer
+            updating: '',
             options: ['Paid', 'Debt']
         };
 
@@ -32,18 +33,29 @@ class UpdateWarranty extends React.Component {
     }
 
     handleChange = (e) => {
+        if(this.state.updating) {
+            this.setState({updating: ''});
+        }        
+      
         const { name, value } = e.target;
+     
         this.setState({ [name]: value });
+        if(name==="war_type") {
+            this.setState({war_type:value});
+        } else if (e.target.type === "checkbox") {
+            this.setState({ [name]: e.target.checked });
+        }
     }
 
-    // Register sale
+    // Update warranty
     handleWarrantyUpdate = (e) => {
         e.preventDefault();
 
         const { model, sn, buyer, rec_date } = this.state;
         if (model && sn && buyer && rec_date) {
             this.setState({
-                ...this.state
+                ...this.state,
+                updating: ''
             });
             // Preparing form data for register
             // console.log('updating...', this.state)
@@ -72,7 +84,7 @@ class UpdateWarranty extends React.Component {
 
     render() {
         
-        const {model, sn, buyer, rec_date, submitted, war_req_des,
+        const {model, sn, buyer, rec_date, updating, war_req_des,
         war_type, contact_info,  rec_user, war_res_des, service_code,
         price, ret_date, invoice_flag, invoice_sent, deliv_date} = this.state;
         let optionResult = ''
@@ -90,6 +102,9 @@ class UpdateWarranty extends React.Component {
                         <h2 className="mt-4 mb-4">
                             Update warranty
                         </h2>
+                        {updating &&
+                            alert('Successfully updated')
+                        }
                         <Form>
                             <Form.Group>
                                 <Form.Control type="text" name="model" value={model} onChange={this.handleChange} placeholder="Make and Model" />
@@ -111,7 +126,7 @@ class UpdateWarranty extends React.Component {
 
                             <Form.Group>
                                 <Form.Label>Warranty type</Form.Label>
-                                <Form.Control as="select" name="war_type" onChange={this.handleChange}>
+                                <Form.Control as="select" name="war_type" value={war_type} onChange={this.handleChange}>
                                     {optionResult}
                                 </Form.Control>
                             </Form.Group>
@@ -158,11 +173,11 @@ class UpdateWarranty extends React.Component {
                             </Form.Group>
 
                             <Form.Group>
-                                <Form.Check type="checkbox" name="invoice_flag" onChange={this.handleChange} label="Added to Invoice" />
+                                <Form.Check type="checkbox" name="invoice_flag" checked={invoice_flag} onChange={this.handleChange} label="Added to Invoice" />
                             </Form.Group>
 
                             <Form.Group>
-                                <Form.Check type="checkbox" name="invoice_sent" onChange={this.handleChange} label="Invoice sent" />
+                                <Form.Check type="checkbox" name="invoice_sent" checked={invoice_sent} onChange={this.handleChange} label="Invoice sent" />
                             </Form.Group>
 
                             <Form.Group>
