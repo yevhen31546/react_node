@@ -18,13 +18,14 @@ import './App.css';
 import SalesPage from './pages/sales';
 import WarrantyPage from './pages/warranty';
 import RegisterSale from './pages/sales/RegisterSale';
+import RegisterWarranty from './pages/warranty/RegisterWarranty'
 
 function App() {
   return (
     <Router history={history}>
-      <div className="container-fluid">
+      <div className="container-fluid" style={{marginTop: '2%'}}>
         <Navbar bg="white" expand="lg">
-          <NavbarBrand href="/">Company XYZ</NavbarBrand>
+          <NavbarBrand href="/" style={{fontWeight: 700}}>Company XYZ</NavbarBrand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="mr-auto">
@@ -39,6 +40,7 @@ function App() {
           <Route path="/sales" exact component={SalesPage} />
           <Route path="/warranty" exact component={WarrantyPage} />
           <Route path="/registersale" exact component={RegisterSale} />
+          <Route path="/registerwarranty" exact component={RegisterWarranty} />
         </Switch>
       </div>
     </Router>
