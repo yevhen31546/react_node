@@ -22,7 +22,7 @@ exports.create_a_warranty = function(req, res) {
 
 // Update Warranty
 exports.update_a_warranty = function(req, res) {
-    console.log(req.params.warrantyId)
+    // console.log(req.params.warrantyId)
     Warranty.updateById(req.params.warrantyId, new Warranty(req.body), function(err, Warranty) {
         if (err)
             res.send(err);

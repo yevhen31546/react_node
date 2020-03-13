@@ -30,7 +30,7 @@ var Warranty = function(Warranty) {
 
 // Create Warranty
 Warranty.createWarranty = function(newWarranty, result) {
-    console.log('warranty', newWarranty)
+    // console.log('warranty', newWarranty)
     sql.query("INSERT INTO warranty set ?", newWarranty, function(err, res) {
         if (err) {
             result(err, null);

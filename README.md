@@ -1,14 +1,29 @@
 This is for Datatable CRUD functionality project.
-* Looking for a developer to create a simple 
+```
 Node.js registration website with records database.<br>
-Website must have two main views - Sales and Warranty.
-Features must include Adding new entry, editing/updating previous entry, 
-attaching files, pagination for main views, 
-PDF creation from entry record, searching for records, date format validation *
-
+Website have two main views - Sales and Warranty.
+Features include:
+* adding new entry, editing/updating previous entry, attaching files, pagination for main views, 
+* PDF creation from entry record, searching for records, date format validation
+```
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).<br/>
 
 Also Backend is node express.<br/>
+
+# How to run?
+*** First, install database. ***
+> Please excute **db.sql** dump file
+*** Second, clone this project and then install npm dependencies. ***
+> cd backend > npm i
+> cd client > npm i
+*** Finally, run project ***
+> cd backend > npm run start
+> cd client > npm run start
+
+That's all!
+
+
+
 
 ## Front end
 

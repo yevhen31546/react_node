@@ -5,7 +5,7 @@ import 'font-awesome/css/font-awesome.min.css';
 import { withRouter } from 'react-router-dom';
 import Loader from 'react-loader-spinner'
 import axios from 'axios'
-import { saveAs } from 'file-saver'
+// import { saveAs } from 'file-saver'
 // import component
 // import EditModal from '../../components/editWarrantyModal';
 import UpdateWarranty from "./UpdateWarranty";
