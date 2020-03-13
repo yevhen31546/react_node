@@ -11,12 +11,12 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 Also Backend is node express.<br/>
 
 # How to run?
-*** First, install database. ***
+First, install database.
 * Set up **db.sql** dump file<br />
-*** Second, clone this project and then install npm dependencies. ***
+Second, clone this project and then install npm dependencies.
 * cd backend > npm i<br />
 * cd client > npm i <br />
-*** Finally, run project ***
+Finally, run project
 * cd backend > npm run start<br />
 * cd client > npm run start<br />
 
