@@ -4,6 +4,8 @@ import {Button} from 'react-bootstrap';
 import 'font-awesome/css/font-awesome.min.css';
 import { withRouter } from 'react-router-dom';
 import Loader from 'react-loader-spinner'
+import axios from 'axios'
+import { saveAs } from 'file-saver'
 // import component
 // import EditModal from '../../components/editWarrantyModal';
 import UpdateWarranty from "./UpdateWarranty";
@@ -54,7 +56,19 @@ class WarrantyPage extends React.Component {
 
     // Print warranty button
     printBtnFormatter = (cell, row) => {
-        return <Button variant="success">Print</Button>
+        return <Button variant="success" onClick={() => this.pdfGenerate(row)}>Print</Button>
+    }
+
+    // go to pdfGenerate component
+    pdfGenerate = (row) => {
+        // console.log('pdf generate data..', row)
+        axios.post(process.env.REACT_APP_API_URL+'/create-pdf', row)
+        .then(() => window.open(`${process.env.REACT_APP_API_URL}/create-pdf?filename=${row.id}.pdf`))
+        // .then((res) => {
+        //     const pdfBlob = new Blob([res.data], {type: 'application/pdf'})
+        //     saveAs(pdfBlob, 'entry.pdf');
+        // })
+
     }
     
     // Display edit component
@@ -84,7 +98,7 @@ class WarrantyPage extends React.Component {
             index++;
             warrantyList[i]['index'] = index;
         }
-        console.log('warranty list..', warrantyList)
+        // console.log('warranty list..', warrantyList)
 
         if (error) { // warranty list load error
             return <div>Error: {error.message}</div>;

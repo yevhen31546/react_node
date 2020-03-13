@@ -27,12 +27,15 @@ app.use(express.static(path.join(__dirname, 'public')));
 var indexRouter = require('./routes/index');
 var salesRouter = require('./routes/sales');
 var warrantyRouter = require('./routes/warranty');
-var pdfRouter = require('./routes/pdf');
+var pdfRouter = require('./routes/pdf'); // invoice viewer for pdf
+var printPdfRouter = require('./routes/printEntry'); // print entry for each warranty
+
 
 app.use('/', indexRouter);
 app.use('/sales', salesRouter);
 app.use('/warranty', warrantyRouter);
 app.use('/pdf', pdfRouter);
+app.use('/create-pdf', printPdfRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

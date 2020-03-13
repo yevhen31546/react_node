@@ -31,6 +31,9 @@ Using react bootstrap.
 #### `npm install react-bootstrap-table --save`
 Using react bootstrap table
 
+#### `npm i file-saver`
+For generating PDF document, npm i file-saver <br />
+
 ## Back end
 Create new express project by cmd <br />
 
@@ -50,6 +53,9 @@ app.use('/warranty', warrantyRouter);
 
 #### `npm i multer uuid`
 For file uploading, npm multer install <br />
+
+#### `npm i html-pdf`
+For generating PDF document, npm i html-pdf <br />
 
 ## Connect DB
 ### `npm install mysql`

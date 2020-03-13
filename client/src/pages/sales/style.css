@@ -16,3 +16,9 @@ thead tr {
     margin-top: 2px;
     text-align: center;
 }
+
+.invoice-file {
+    background: none !important;
+    border: none !important;
+    color: #212529 !important;
+}

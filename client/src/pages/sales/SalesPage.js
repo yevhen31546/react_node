@@ -105,7 +105,7 @@ class SalesPage extends React.Component {
             return ''
         } else {
             // return <a href={row.invoice} target="blank"><i className="fa fa-file-o"></i></a>
-            return <Button variant="danger" onClick={() => this.viewHandler(row.invoice)}><i className="fa fa-file-o"></i></Button>
+            return <Button className="invoice-file" onClick={() => this.viewHandler(row.invoice)}><i className="fa fa-file-o"></i></Button>
         }
     }
     
