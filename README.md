@@ -12,13 +12,13 @@ Also Backend is node express.<br/>
 
 # How to run?
 *** First, install database. ***
-* Set up **db.sql** dump file
+* Set up **db.sql** dump file<br />
 *** Second, clone this project and then install npm dependencies. ***
-* cd backend > npm i
-* cd client > npm i
+* cd backend > npm i<br />
+* cd client > npm i <br />
 *** Finally, run project ***
-* cd backend > npm run start
-* cd client > npm run start
+* cd backend > npm run start<br />
+* cd client > npm run start<br />
 
 That's all!
 
